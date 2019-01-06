@@ -1,7 +1,9 @@
 package com.example.evans.androidapp;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import static com.example.evans.androidapp.DBHelper.KEY_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,29 +59,35 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this,Activity2.class);
+                startActivity(intent);
                 MainActivity.this.finish();
+
             }
 
         });
+        final SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
-       /* findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.buttonsave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editText = findViewById(R.id.inputuserid2);
-                String name = editText.getText().toString();
-                String latitude = dbHelper.getlocationbyuserid(name);
-                String longitude = dbHelper.getlocationbyuserid(name);
-                if (latitude != null){
-                    Toast.makeText(MainActivity.this,latitude, Toast.LENGTH_SHORT).show();
-                }
-                if (longitude != null){
-                    Toast.makeText(MainActivity.this,latitude, Toast.LENGTH_SHORT).show();
-                }
-
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper.KEY_ID,inputid.getText().toString());
+            cv.put(DBHelper.KEY_USERID,inputuserid.getText().toString());
+            cv.put(DBHelper.KEY_LATITUDE,inputlat.getText().toString());
+            cv.put(DBHelper.KEY_LONGITUDE,inputlong.getText().toString());
+            cv.put(DBHelper.KEY_DT,inputlong.getText().toString());
+                dbHelper.Insert(cv,sqLiteDatabase);
+                //clear text after successful input
+                inputid.getText().clear();
+                inputuserid.getText().clear();
+                inputlat.getText().clear();
+                inputlong.getText().clear();
+                inputdt.getText().clear();
+                //https://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered
             }
-
         });
-        */
+
     }
 
 }
